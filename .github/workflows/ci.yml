@@ -1,0 +1,10 @@
+name: Homebrew Tap CI
+on: [push, pull_request]
+jobs:
+  audit:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: brew update-reset
+      - run: brew audit --strict --online Formula/*.rb
+      - run: brew style Formula/*.rb
