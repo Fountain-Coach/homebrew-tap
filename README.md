@@ -1,3 +1,5 @@
+![CI](https://github.com/Fountain-Coach/homebrew-tap/actions/workflows/ci.yml/badge.svg)
+
 **Overview**
 - Homebrew tap for the Tutor CLI.
 - Tutor is a Swift command‑line tool to scaffold, build, run, and test FountainAI tutorials.
@@ -42,4 +44,3 @@
 
 **License**
 - MIT, matching the upstream Tutor project.
-
