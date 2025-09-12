@@ -6,5 +6,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: brew update-reset
-      - run: brew audit --strict --online $(ls Formula/*.rb | xargs -n1 basename | sed 's/\.rb$//')
+      - run: brew untap Fountain-Coach/tap || true
+      - run: brew tap Fountain-Coach/tap "$PWD"
+      - run: brew audit --strict --online $(ls Formula/*.rb | xargs -n1 basename | sed 's/\.rb$//' | sed 's#^#fountain-coach/tap/#')
       - run: brew style Formula/*.rb
