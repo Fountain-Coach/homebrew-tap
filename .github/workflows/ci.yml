@@ -6,5 +6,5 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: brew update-reset
-      - run: brew audit --strict --online Formula/*.rb
+      - run: brew audit --strict --online $(ls Formula/*.rb | xargs -n1 basename | sed 's/\.rb$//')
       - run: brew style Formula/*.rb
