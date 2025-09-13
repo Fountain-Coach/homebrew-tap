@@ -37,6 +37,31 @@
   - Set `url` to the tag tarball and update `sha256` in `Formula/tutor.rb`.
   - Open a PR; CI will run audit/style checks.
 
+**Updating The Tap (when Tutor changes)**
+- Scenario A — New Tutor release tag (recommended for users):
+  - Create a tag in `Fountain-Coach/tutor` (e.g., `v0.1.1`).
+  - Compute the tarball SHA256:
+    - `brew fetch --force https://github.com/Fountain-Coach/tutor/archive/refs/tags/v0.1.1.tar.gz 2>/dev/null | tail -n1`
+      - Or: `curl -L -s https://github.com/Fountain-Coach/tutor/archive/refs/tags/v0.1.1.tar.gz | shasum -a 256 | awk '{print $1}'`
+  - Update the formula to point to the new tag and SHA:
+    - Manually: edit `Formula/tutor.rb` fields `url` and `sha256`.
+    - Or with Homebrew helper:
+      - `brew bump-formula-pr --tap fountain-coach/tap tutor \
+        --url https://github.com/Fountain-Coach/tutor/archive/refs/tags/v0.1.1.tar.gz \
+        --sha256 <NEW_SHA256> \
+        --message "tutor: v0.1.1"`
+  - Keep the `head` stanza for dev installs; do not remove it.
+  - If Tutor’s minimum Xcode/Swift changed, adjust `depends_on xcode: ["<min>", :build]`.
+  - Open/merge PR; CI runs audit/style.
+
+- Scenario B — Only main branch changed (no new tag):
+  - No action required for stable installs (users remain on last tagged version).
+  - Devs can install the latest with: `brew install --HEAD Fountain-Coach/tap/tutor`.
+
+- Optional bottles (faster installs):
+  - Use `brew test-bot` in CI to build and upload bottles on each tag, then update the formula’s `bottle` block.
+  - See Homebrew docs: https://docs.brew.sh/How-to-Create-and-Maintain-a-Tap
+
 **Troubleshooting**
 - "No available formula with the name 'tutor'": ensure the tap is added, or use the fully‑qualified name `Fountain-Coach/tap/tutor`.
 - Build errors on HEAD installs: confirm Xcode/Swift toolchain is installed (`xcodebuild -version`, `swift --version`).
